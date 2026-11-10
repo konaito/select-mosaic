@@ -31,7 +31,7 @@ Saved words are blurred wherever they appear on the page, including content that
 - Click a word in the list to turn it on or off. Click × to remove it.
 - The list stays after you close the browser.
 
-By default, saved words apply only to tabs where you opened the popup or used the menu. Turn on **Keep blurring saved words after reloads and on other pages** to apply them on every page. Chrome asks for access to all sites when you turn it on; turning it off removes that access.
+Saved words apply to tabs where you opened the popup or used the right-click menu. After a reload or on another page, open the popup again. The extension does not ask for access to all sites.
 
 ## Limitations
 

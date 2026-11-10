@@ -30,24 +30,3 @@ async function removeWord(text) {
   await chrome.storage.local.set({ words });
   return words;
 }
-
-// 「ページをまたいでも続ける」: 全サイトに content.js を自動で入れる
-const PERSIST_ID = 'smz-persist';
-const ALL_URLS = { origins: ['<all_urls>'] };
-
-async function isPersistOn() {
-  const scripts = await chrome.scripting.getRegisteredContentScripts({ ids: [PERSIST_ID] });
-  return scripts.length > 0 && (await chrome.permissions.contains(ALL_URLS));
-}
-
-async function setPersist(on) {
-  const scripts = await chrome.scripting.getRegisteredContentScripts({ ids: [PERSIST_ID] });
-  if (scripts.length) await chrome.scripting.unregisterContentScripts({ ids: [PERSIST_ID] });
-  if (on) {
-    await chrome.scripting.registerContentScripts([
-      { id: PERSIST_ID, matches: ['<all_urls>'], js: ['content.js'], runAt: 'document_idle' },
-    ]);
-  } else {
-    await chrome.permissions.remove(ALL_URLS).catch(() => {}); // 外せなくても自動で入れる設定は消えている
-  }
-}

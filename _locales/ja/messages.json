@@ -53,9 +53,6 @@
   "wordsHint": {
     "message": "文字を押すとオンとオフが切り替わる。"
   },
-  "persist": {
-    "message": "更新やページ移動のあとも、登録した文字をぼかし続ける"
-  },
   "wordTurnOff": {
     "message": "押すとオフ"
   },
@@ -64,9 +61,6 @@
   },
   "remove": {
     "message": "一覧から消す"
-  },
-  "persistError": {
-    "message": "設定を変えられなかった: "
   },
   "contextMenu": {
     "message": "「%s」を常にぼかす"

@@ -53,9 +53,6 @@
   "wordsHint": {
     "message": "Click a word to turn it on or off."
   },
-  "persist": {
-    "message": "Keep blurring saved words after reloads and on other pages"
-  },
   "wordTurnOff": {
     "message": "Click to turn off"
   },
@@ -64,9 +61,6 @@
   },
   "remove": {
     "message": "Remove from list"
-  },
-  "persistError": {
-    "message": "Could not change the setting: "
   },
   "contextMenu": {
     "message": "Always blur \"%s\""
