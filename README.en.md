@@ -1,6 +1,6 @@
 # Select Mosaic
 
-[日本語](README.md)
+[日本語](README.md) · [Website](https://konaito.github.io/select-mosaic/?lang=en)
 
 A Chrome extension that blurs text you select, elements you click, and words you save. Use it to hide email addresses, names, and keys before you take a screenshot or share your screen.
 

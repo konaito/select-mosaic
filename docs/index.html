@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Select Mosaic / 選択モザイク</title>
+<meta name="description" content="Blur text you select, elements you click, or words you save. Hide personal info before you share your screen or go live. Open source Chrome extension.">
+<meta property="og:title" content="Select Mosaic / 選択モザイク">
+<meta property="og:description" content="Blur only what you don't want on screen. A Chrome extension for screenshots, screen sharing, and streaming.">
+<meta property="og:image" content="https://konaito.github.io/select-mosaic/assets/en-2-words.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/icon32.png">
+<style>
+  :root { --ink: #111827; --sub: #4b5563; --mute: #6b7280; --line: #e5e7eb; --bg: #ffffff; --soft: #f6f7fb; --blue: #2563eb; --blue-soft: #eff6ff; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif; }
+  a { color: var(--blue); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+  header { display: flex; align-items: center; gap: 10px; height: 64px; }
+  header img { width: 28px; height: 28px; }
+  header .name { font-weight: 700; }
+  header nav { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+  .lang button { border: 1px solid var(--line); background: #fff; padding: 3px 10px; border-radius: 999px; font: inherit; font-size: 13px; cursor: pointer; color: var(--sub); }
+  .lang button.on { border-color: var(--ink); color: var(--ink); font-weight: 600; }
+  header nav > a { font-size: 14px; color: var(--sub); text-decoration: none; margin-right: 8px; }
+
+  .hero { padding: 48px 24px 28px; text-align: center; }
+  .hero h1, .hero p, section h2 { word-break: auto-phrase; text-wrap: balance; }
+  .hero h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.01em; }
+  .hero h1 .b { display: inline-block; animation: pulse 4s ease-in-out infinite; }
+  @keyframes pulse { 0%, 35% { filter: blur(0); } 50%, 85% { filter: blur(6px); } 100% { filter: blur(0); } }
+  @media (prefers-reduced-motion: reduce) { .hero h1 .b { animation: none; } }
+  .hero p { color: var(--sub); font-size: 18px; margin: 0 auto 24px; max-width: 640px; }
+  .cta { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 10px; border: 1px solid var(--line); background: #fff; color: var(--ink); text-decoration: none; font-weight: 600; font-size: 15px; }
+  .btn.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .btn.pending { background: #f3f4f6; color: var(--mute); border-color: var(--line); cursor: default; }
+  .btn small { font-weight: 400; font-size: 12px; }
+
+  /* デモ */
+  .demo { margin: 28px auto 0; max-width: 880px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--soft); text-align: left; }
+  .demo-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 14px; background: #fff; border-bottom: 1px solid var(--line); }
+  .demo-bar .hint { font-size: 13px; color: var(--mute); margin-right: auto; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button { border: 0; background: #fff; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; color: var(--sub); }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button.on { background: var(--blue-soft); color: var(--blue); font-weight: 600; }
+  .reset { border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 6px 10px; font: inherit; font-size: 13px; cursor: pointer; color: var(--sub); }
+  .words { display: none; flex-wrap: wrap; gap: 6px; align-items: center; padding: 10px 14px; background: #fff; border-bottom: 1px solid var(--line); }
+  .demo.mode-words .words { display: flex; }
+  .words form { display: flex; gap: 6px; }
+  .words input { border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; font: inherit; font-size: 13px; width: 200px; }
+  .words form button { border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 5px 10px; font: inherit; font-size: 13px; cursor: pointer; }
+  .chip { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; background: #fff; }
+  .chip button { border: 0; background: none; font: inherit; cursor: pointer; padding: 3px 4px 3px 10px; color: var(--ink); }
+  .chip button::before { content: "●"; font-size: 9px; margin-right: 6px; color: #d1d5db; vertical-align: 1px; }
+  .chip.on { border-color: var(--blue); background: var(--blue-soft); }
+  .chip.on button { color: var(--blue); font-weight: 600; }
+  .chip.on button::before { color: var(--blue); }
+  .chip:not(.on) button { color: #9ca3af; text-decoration: line-through; }
+  .chip .x { padding: 3px 10px 3px 6px; color: var(--mute); }
+  .chip .x::before { content: none; }
+
+  .stage { position: relative; margin: 18px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; font-size: 15px; }
+  .live { position: absolute; top: 14px; right: 16px; font-size: 11px; font-weight: 700; color: #fff; background: #dc2626; padding: 2px 8px; border-radius: 4px; letter-spacing: .06em; }
+  .live::before { content: ""; display: inline-block; width: 6px; height: 6px; background: #fff; border-radius: 50%; margin-right: 5px; vertical-align: 1px; animation: blink 1.2s infinite; }
+  @keyframes blink { 50% { opacity: .3; } }
+  .stage h3 { margin: 0 0 8px; font-size: 17px; }
+  .stage table { border-collapse: collapse; width: 100%; }
+  .stage td { padding: 9px 6px; border-top: 1px solid #f1f1f4; vertical-align: top; }
+  .stage td:first-child { width: 32%; color: var(--mute); }
+  .stage .note { color: var(--mute); font-size: 13px; margin: 10px 0 0; }
+  .demo.mode-element .stage { cursor: crosshair; }
+  .demo.mode-element .stage :is(h3, td, p):hover { outline: 2px solid var(--blue); outline-offset: 1px; background: rgba(37, 99, 235, .06); }
+  .smz { filter: blur(3px); }
+  .smz-el { filter: blur(5px); }
+
+  section { padding: 64px 0 8px; }
+  section h2 { font-size: 28px; margin: 0 0 8px; }
+  section > .wrap > p.lead { color: var(--sub); margin: 0 0 28px; max-width: 680px; }
+  .feature { display: grid; grid-template-columns: 1fr 1.35fr; gap: 32px; align-items: center; margin: 0 0 48px; }
+  .feature:nth-child(even) { grid-template-columns: 1.35fr 1fr; }
+  .feature:nth-child(even) .text { order: 2; }
+  .feature h3 { font-size: 21px; margin: 0 0 8px; }
+  .feature p { color: var(--sub); margin: 0; }
+  .feature img { width: 100%; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 10px 30px rgba(17, 24, 39, .08); }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card { border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 17px; }
+  .card p { margin: 0; color: var(--sub); font-size: 15px; }
+  ol.steps { padding-left: 1.2em; color: var(--sub); }
+  ol.steps li { margin: 4px 0; }
+  ul.limits { color: var(--sub); padding-left: 1.2em; }
+  code { background: #f3f4f6; padding: 1px 6px; border-radius: 4px; font-size: .92em; }
+  footer { margin-top: 64px; border-top: 1px solid var(--line); padding: 24px 0 48px; color: var(--mute); font-size: 14px; }
+  footer .wrap { display: flex; gap: 18px; flex-wrap: wrap; }
+  footer a { color: var(--mute); }
+  @media (max-width: 760px) {
+    .feature, .feature:nth-child(even) { grid-template-columns: 1fr; }
+    .feature:nth-child(even) .text { order: 0; }
+    .grid3 { grid-template-columns: 1fr; }
+    .stage td:first-child { width: 38%; }
+  }
+</style>
+</head>
+<body>
+<header class="wrap">
+  <img src="assets/icon128.png" alt="">
+  <span class="name" data-k="name"></span>
+  <nav>
+    <a href="https://github.com/konaito/select-mosaic">GitHub</a>
+    <span class="lang"><button data-lang="ja">日本語</button> <button data-lang="en">English</button></span>
+  </nav>
+</header>
+
+<main>
+  <div class="hero wrap">
+    <h1 data-k="h1" data-html></h1>
+    <p data-k="sub"></p>
+    <div class="cta">
+      <span class="btn pending" data-k="store" data-html></span>
+      <a class="btn" href="https://github.com/konaito/select-mosaic" data-k="source"></a>
+    </div>
+
+    <div class="demo mode-text" id="demo">
+      <div class="demo-bar">
+        <span class="hint" id="hint"></span>
+        <span class="seg">
+          <button data-mode="text" data-k="mText"></button><button data-mode="element" data-k="mElement"></button><button data-mode="words" data-k="mWords"></button>
+        </span>
+        <button class="reset" id="reset" data-k="reset"></button>
+      </div>
+      <div class="words">
+        <form id="addWord"><input id="wordInput" autocomplete="off"><button data-k="add"></button></form>
+        <span id="chips" style="display:contents"></span>
+      </div>
+      <div class="stage" id="stage"></div>
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <h2 data-k="fTitle"></h2>
+      <p class="lead" data-k="fLead"></p>
+      <div class="feature">
+        <div class="text"><h3 data-k="f1h"></h3><p data-k="f1p"></p></div>
+        <img data-img="1-text" alt="">
+      </div>
+      <div class="feature">
+        <div class="text"><h3 data-k="f2h"></h3><p data-k="f2p"></p></div>
+        <img data-img="2-words" alt="">
+      </div>
+      <div class="feature">
+        <div class="text"><h3 data-k="f3h"></h3><p data-k="f3p"></p></div>
+        <img data-img="3-element" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <h2 data-k="pTitle"></h2>
+      <p class="lead" data-k="pLead"></p>
+      <div class="grid3">
+        <div class="card"><h3 data-k="p1h"></h3><p data-k="p1p"></p></div>
+        <div class="card"><h3 data-k="p2h"></h3><p data-k="p2p" data-html></p></div>
+        <div class="card"><h3 data-k="p3h"></h3><p data-k="p3p" data-html></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="wrap">
+      <h2 data-k="iTitle"></h2>
+      <p class="lead" data-k="iLead"></p>
+      <ol class="steps" data-k="iSteps" data-html></ol>
+    </div>
+  </section>
+
+  <section id="limits">
+    <div class="wrap">
+      <h2 data-k="lTitle"></h2>
+      <ul class="limits" data-k="lList" data-html></ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 konaito · MIT License</span>
+    <a href="privacy.html" data-k="privacyLink"></a>
+    <a href="https://github.com/konaito/select-mosaic/issues" data-k="issues"></a>
+  </div>
+</footer>
+
+<script>
+const T = {
+  ja: {
+    name: '選択モザイク',
+    h1: '映したくない文字だけ、<span class="b">ぼかす。</span>',
+    sub: '選んだ文字、クリックした要素、登録した文字を、その場でぼかすChrome拡張です。スクリーンショット、画面共有、配信の前に。',
+    store: 'Chrome ウェブストア <small>審査中</small>',
+    source: 'ソースコード',
+    hint: { text: 'カードの中の文字をドラッグして選んでください', element: 'カードの中の行をクリックしてください。もう一度で外れます', words: '登録した文字は、カードの中で見つかった場所がすべてぼけます' },
+    mText: '文字', mElement: '要素', mWords: '登録した文字', reset: '元に戻す', add: '追加', wordPh: 'ぼかしたい文字',
+    stage: `<span class="live">LIVE</span><h3>アカウント設定</h3><table>
+      <tr><td>名前</td><td>山田 太郎</td></tr>
+      <tr><td>メール</td><td>taro.yamada@example.com</td></tr>
+      <tr><td>電話番号</td><td>090-1234-5678</td></tr>
+      <tr><td>住所</td><td>東京都千代田区丸の内1-1-1</td></tr>
+      <tr><td>APIキー</td><td>sk-live-4f9a2c7e1b8d6a3f0e5c</td></tr></table>
+      <p class="note">返信は常に taro.yamada@example.com から送ります。</p>`,
+    seedWords: ['taro.yamada@example.com', 'sk-live-4f9a2c7e1b8d6a3f0e5c'],
+    fTitle: '3つのぼかし方', fLead: '拡張のアイコンを押すか Alt+Shift+M でポップアップを開き、使い方を選びます。',
+    f1h: '文字を選んでぼかす', f1p: 'ドラッグ、ダブルクリック、全選択で選んだ文字が、選んだ瞬間にぼけます。Esc で止めます。',
+    f2h: '登録した文字を全部ぼかす', f2p: 'メールアドレスや名前を一覧に登録すると、ページの中で見つかった場所がすべてぼけます。後から表示された部分にも当たります。一覧の文字を押すとオンとオフが切り替わります。右クリックからも登録できます。',
+    f3h: '要素ごとぼかす', f3p: 'マウスを乗せた要素が枠で囲まれ、クリックするとその要素全体がぼけます。もう一度クリックすると外れます。',
+    pTitle: '通信しない拡張です', pLead: '隠したい情報を扱う道具なので、拡張そのものが情報を外に出さない作りにしています。',
+    p1h: 'データを集めない', p1p: '登録した文字はブラウザの中にだけ保存します。アクセス解析も広告もありません。',
+    p2h: '全サイトの権限を求めない', p2p: 'ポップアップか右クリックを使ったタブにだけ入ります。権限は <code>activeTab</code>、<code>scripting</code>、<code>storage</code>、<code>contextMenus</code> の4つです。',
+    p3h: 'コードを公開', p3p: 'ソースは <a href="https://github.com/konaito/select-mosaic">GitHub</a> に MIT ライセンスで公開しています。<a href="privacy.html">プライバシーポリシー</a>',
+    iTitle: '入れ方', iLead: 'Chrome ウェブストアで審査中です。公開までは、ソースから読み込めます。',
+    iSteps: '<li><a href="https://github.com/konaito/select-mosaic">リポジトリ</a>を clone します。</li><li><code>chrome://extensions</code> を開き、デベロッパーモードをオンにします。</li><li>「パッケージ化されていない拡張機能を読み込む」で clone したフォルダを選びます。</li>',
+    lTitle: 'できないこと',
+    lList: '<li>ページを開いた直後は、ぼける前の文字が一瞬表示されます。表示される前にぼかす機能は <a href="https://github.com/konaito/select-mosaic/issues/3">#3</a> で進めています。</li><li>ページを更新すると、ぼかしは消えます。もう一度ポップアップを開くと、登録した文字に当たります。</li><li><code>chrome://</code> のページ、Chrome ウェブストア、iframe の中では使えません。</li><li>ぼかしは表示を変えるだけです。ページの元の文字はそのまま残ります。</li>',
+    privacyLink: 'プライバシーポリシー', issues: '不具合の報告',
+  },
+  en: {
+    name: 'Select Mosaic',
+    h1: 'Blur only what you <span class="b">don\'t want on screen.</span>',
+    sub: 'A Chrome extension that blurs text you select, elements you click, and words you save, right on the page. Use it before screenshots, screen sharing, and streams.',
+    store: 'Chrome Web Store <small>in review</small>',
+    source: 'Source code',
+    hint: { text: 'Drag to select text inside the card', element: 'Click a row inside the card. Click again to remove', words: 'Saved words are blurred wherever they appear in the card' },
+    mText: 'Text', mElement: 'Element', mWords: 'Saved words', reset: 'Reset', add: 'Add', wordPh: 'Text to blur',
+    stage: `<span class="live">LIVE</span><h3>Account settings</h3><table>
+      <tr><td>Name</td><td>Taro Yamada</td></tr>
+      <tr><td>Email</td><td>taro.yamada@example.com</td></tr>
+      <tr><td>Phone</td><td>+1 415-555-0134</td></tr>
+      <tr><td>Address</td><td>1 Market St, San Francisco, CA</td></tr>
+      <tr><td>API key</td><td>sk-live-4f9a2c7e1b8d6a3f0e5c</td></tr></table>
+      <p class="note">Replies are always sent from taro.yamada@example.com.</p>`,
+    seedWords: ['taro.yamada@example.com', 'sk-live-4f9a2c7e1b8d6a3f0e5c'],
+    fTitle: 'Three ways to blur', fLead: 'Click the toolbar icon or press Alt+Shift+M to open the popup, then pick a mode.',
+    f1h: 'Blur what you select', f1p: 'Text you select by dragging, double-clicking, or selecting all is blurred the moment you select it. Press Esc to stop.',
+    f2h: 'Blur saved words everywhere', f2p: 'Save your email address or name, and every match on the page is blurred, including content that loads later. Click a saved word to turn it on or off. You can also add words from the right-click menu.',
+    f3h: 'Blur whole elements', f3p: 'The element under the cursor is outlined. Click to blur the whole element, click again to remove the blur.',
+    pTitle: 'It never talks to the network', pLead: 'A tool for hiding information should not leak it. The extension keeps everything inside your browser.',
+    p1h: 'No data collection', p1p: 'Saved words are stored only in your browser. No analytics, no ads.',
+    p2h: 'No access to all sites', p2p: 'It runs only on the tab where you open the popup or use the right-click menu. Permissions: <code>activeTab</code>, <code>scripting</code>, <code>storage</code>, <code>contextMenus</code>.',
+    p3h: 'Open source', p3p: 'The source is on <a href="https://github.com/konaito/select-mosaic">GitHub</a> under the MIT license. <a href="privacy.html">Privacy policy</a>',
+    iTitle: 'Install', iLead: 'The extension is in review on the Chrome Web Store. Until then, load it from source.',
+    iSteps: '<li>Clone the <a href="https://github.com/konaito/select-mosaic">repository</a>.</li><li>Open <code>chrome://extensions</code> and turn on Developer mode.</li><li>Click "Load unpacked" and choose the cloned folder.</li>',
+    lTitle: 'Limitations',
+    lList: '<li>Right after a page loads, text can appear for a moment before it is blurred. Blurring before display is tracked in <a href="https://github.com/konaito/select-mosaic/issues/3">#3</a>.</li><li>Reloading the page removes the blur. Open the popup again to re-apply saved words.</li><li>Does not work on <code>chrome://</code> pages, the Chrome Web Store, or inside iframes.</li><li>Blur only changes how the page looks. The original text stays in the page.</li>',
+    privacyLink: 'Privacy policy', issues: 'Report an issue',
+  },
+};
+
+const qs = new URLSearchParams(location.search).get('lang');
+let lang = qs === 'ja' || qs === 'en' ? qs : (navigator.language || '').toLowerCase().startsWith('ja') ? 'ja' : 'en';
+
+const demo = document.getElementById('demo');
+const stage = document.getElementById('stage');
+let mode = 'text';
+let words = [];
+
+function render() {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.title = lang === 'ja' ? '選択モザイク（Select Mosaic）' : 'Select Mosaic';
+  document.querySelectorAll('[data-k]').forEach((el) => {
+    const v = t[el.dataset.k];
+    if (typeof v !== 'string') return;
+    if ('html' in el.dataset) el.innerHTML = v; else el.textContent = v;
+  });
+  document.querySelectorAll('[data-img]').forEach((img) => (img.src = `assets/${lang}-${img.dataset.img}.png`));
+  document.querySelectorAll('.lang button').forEach((b) => b.classList.toggle('on', b.dataset.lang === lang));
+  document.getElementById('wordInput').placeholder = t.wordPh;
+  resetDemo();
+}
+
+function resetDemo() {
+  stage.innerHTML = T[lang].stage;
+  words = T[lang].seedWords.map((text) => ({ text, on: true }));
+  setMode(mode);
+}
+
+function setMode(m) {
+  mode = m;
+  demo.className = `demo mode-${m}`;
+  document.querySelectorAll('.seg button').forEach((b) => b.classList.toggle('on', b.dataset.mode === m));
+  document.getElementById('hint').textContent = T[lang].hint[m];
+  applyWords();
+  renderChips();
+}
+
+// ---- 文字選択（拡張の content.js と同じ包み方を、カードの中だけで行う）----
+function textNodesIn(range) {
+  const out = [];
+  const walker = document.createTreeWalker(stage, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => (range.intersectsNode(n) && n.nodeValue.trim() && !n.parentElement.closest('.smz, .live') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT),
+  });
+  while (walker.nextNode()) out.push(walker.currentNode);
+  return out;
+}
+function wrapSelection() {
+  if (mode !== 'text') return;
+  const sel = getSelection();
+  if (!sel || sel.isCollapsed || !sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  if (!stage.contains(range.commonAncestorContainer)) return;
+  const { startContainer: sc, startOffset: so, endContainer: ec, endOffset: eo } = range;
+  for (let n of textNodesIn(range)) {
+    let s = n === sc ? so : 0, e = n === ec ? eo : n.nodeValue.length;
+    if (s >= e || !n.nodeValue.slice(s, e).trim()) continue;
+    if (s > 0) { n = n.splitText(s); e -= s; }
+    if (e < n.nodeValue.length) n.splitText(e);
+    const span = document.createElement('span'); span.className = 'smz';
+    n.parentNode.insertBefore(span, n); span.appendChild(n);
+  }
+  sel.removeAllRanges();
+}
+stage.addEventListener('mouseup', () => setTimeout(wrapSelection, 0));
+stage.addEventListener('touchend', () => setTimeout(wrapSelection, 0));
+
+// ---- 要素 ----
+stage.addEventListener('click', (e) => {
+  if (mode !== 'element') return;
+  const el = e.target.closest('h3, td, p');
+  if (!el || !stage.contains(el)) return;
+  el.classList.toggle('smz-el');
+});
+
+// ---- 登録した文字 ----
+function unwrapWords() {
+  stage.querySelectorAll('.smz-w').forEach((s) => { const p = s.parentNode; while (s.firstChild) p.insertBefore(s.firstChild, s); s.remove(); p.normalize(); });
+}
+function applyWords() {
+  unwrapWords();
+  const list = words.filter((w) => w.on).map((w) => w.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).sort((a, b) => b.length - a.length);
+  if (mode !== 'words' || !list.length) return;
+  const re = new RegExp(list.join('|'), 'gi');
+  const nodes = [];
+  const walker = document.createTreeWalker(stage, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement.closest('.smz-w, .live') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  for (const node of nodes) {
+    const hits = []; let m; re.lastIndex = 0;
+    while ((m = re.exec(node.nodeValue))) hits.push([m.index, m[0].length]);
+    for (let i = hits.length - 1; i >= 0; i--) {
+      const mid = node.splitText(hits[i][0]); mid.splitText(hits[i][1]);
+      const span = document.createElement('span'); span.className = 'smz smz-w';
+      mid.parentNode.insertBefore(span, mid); span.appendChild(mid);
+    }
+  }
+}
+function renderChips() {
+  const box = document.getElementById('chips');
+  box.replaceChildren();
+  for (const w of words) {
+    const chip = document.createElement('span'); chip.className = 'chip' + (w.on ? ' on' : '');
+    const b = document.createElement('button'); b.textContent = w.text; b.onclick = () => { w.on = !w.on; applyWords(); renderChips(); };
+    const x = document.createElement('button'); x.className = 'x'; x.textContent = '×'; x.onclick = () => { words = words.filter((v) => v !== w); applyWords(); renderChips(); };
+    chip.append(b, x); box.append(chip);
+  }
+}
+document.getElementById('addWord').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('wordInput');
+  const text = input.value.trim();
+  if (!text) return;
+  if (!words.some((w) => w.text.toLowerCase() === text.toLowerCase())) words.unshift({ text, on: true });
+  input.value = '';
+  applyWords(); renderChips();
+});
+
+document.querySelectorAll('.seg button').forEach((b) => (b.onclick = () => setMode(b.dataset.mode)));
+document.getElementById('reset').onclick = resetDemo;
+document.querySelectorAll('.lang button').forEach((b) => (b.onclick = () => {
+  lang = b.dataset.lang;
+  history.replaceState(null, '', `?lang=${lang}`);
+  render();
+}));
+
+render();
+</script>
+</body>
+</html>
