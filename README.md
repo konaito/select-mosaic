@@ -1,6 +1,6 @@
 # 選択モザイク
 
-[English](README.en.md)
+[English](README.en.md) ・ [サイト](https://konaito.github.io/select-mosaic/)
 
 選んだ文字やクリックしたHTML要素にぼかしをかけるChrome拡張です。
 スクリーンショットを撮る前に、メールアドレスや名前を隠すために使います。
