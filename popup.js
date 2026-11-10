@@ -79,26 +79,7 @@ $('add').onsubmit = async (e) => {
   $('word').value = '';
 };
 
-$('persist').onchange = async (e) => {
-  const box = e.target;
-  try {
-    if (box.checked) {
-      // 権限の確認はクリック直後に出さないと拒否されるので、先に await を挟まない
-      const granted = await chrome.permissions.request({ origins: ['<all_urls>'] });
-      if (!granted) { box.checked = false; return; }
-      await setPersist(true);
-    } else {
-      await setPersist(false);
-    }
-  } catch (err) {
-    box.checked = await isPersistOn();
-    $('error').hidden = false;
-    $('error').textContent = t('persistError') + err.message;
-  }
-};
-
 (async () => {
   renderWords(await getWords());
-  $('persist').checked = await isPersistOn();
   await initPage();
 })();
