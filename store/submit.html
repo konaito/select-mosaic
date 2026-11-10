@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>選択モザイク：ストア入力シート</title>
+<style>
+  :root { --b: #e5e7eb; --m: #6b7280; --a: #2563eb; }
+  body { margin: 0; background: #f8fafc; color: #111827; font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 24px 20px 80px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .lead { color: var(--m); margin: 0 0 20px; }
+  nav { position: sticky; top: 0; z-index: 2; background: #f8fafcee; backdrop-filter: blur(6px); padding: 8px 0; margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--b); }
+  nav a { padding: 4px 10px; border: 1px solid var(--b); border-radius: 999px; background: #fff; color: #111827; text-decoration: none; font-size: 13px; }
+  h2 { font-size: 17px; margin: 32px 0 10px; padding-top: 8px; }
+  h3 { font-size: 14px; margin: 18px 0 8px; color: #374151; }
+  .field { background: #fff; border: 1px solid var(--b); border-radius: 10px; padding: 10px 12px; margin: 8px 0; }
+  .head { display: flex; align-items: center; gap: 8px; }
+  .label { font-weight: 600; }
+  .note { color: var(--m); font-size: 12px; }
+  .head .note { margin-left: 4px; }
+  button.copy { margin-left: auto; flex: none; border: 1px solid var(--b); background: #fff; border-radius: 6px; padding: 3px 10px; font: inherit; font-size: 12px; cursor: pointer; }
+  button.copy:hover { border-color: var(--a); color: var(--a); }
+  button.copy.done { background: #ecfdf5; border-color: #10b981; color: #047857; }
+  pre { margin: 8px 0 0; white-space: pre-wrap; word-break: break-word; font: inherit; background: #f9fafb; border-radius: 6px; padding: 8px 10px; }
+  .choice { margin-top: 6px; padding: 6px 10px; border-radius: 6px; background: #eff6ff; color: #1e3a8a; }
+  .imgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 8px; }
+  figure { margin: 0; }
+  figure img { width: 100%; border: 1px solid var(--b); border-radius: 6px; display: block; }
+  figcaption { font-size: 12px; color: var(--m); margin-top: 3px; word-break: break-all; }
+  .tag { font-size: 11px; padding: 1px 6px; border-radius: 4px; background: #f3f4f6; color: #374151; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>選択モザイク：Chrome ウェブストア入力シート</h1>
+  <p class="lead">ダッシュボードの左メニューの順に並べています。「コピー」を押して、同じ名前の欄に貼ってください。画像はこのページから欄へドラッグするか、Finder の <code>~/Documents/select-mosaic/store/</code> からドラッグします。</p>
+
+  <nav>
+    <a href="#pkg">パッケージ</a>
+    <a href="#listing-en">掲載情報（英語）</a>
+    <a href="#listing-ja">掲載情報（日本語）</a>
+    <a href="#assets">画像</a>
+    <a href="#extra">追加フィールド</a>
+    <a href="#privacy">プライバシー</a>
+    <a href="#regions">販売地域</a>
+    <a href="#access">アクセス</a>
+    <a href="#test">テスト手順</a>
+  </nav>
+
+  <h2 id="pkg">パッケージ</h2>
+  <div class="field">
+    <div class="head"><span class="label">アップロードする zip</span><button class="copy">コピー</button></div>
+    <pre>~/Documents/select-mosaic/dist/select-mosaic-1.0.0.zip</pre>
+    <div class="note">全サイトへのアクセス権限を外したあとに作り直したものです。</div>
+  </div>
+
+  <h2 id="listing-en">ストアの掲載情報：英語（デフォルト）</h2>
+  <div class="field">
+    <div class="head"><span class="label">パッケージのタイトル・概要</span><span class="note">zip の manifest から自動で入ります。入力は不要です</span></div>
+    <pre>Select Mosaic
+Blur text you select, elements you click, or words you save. Hide personal info before you take a screenshot.</pre>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">説明</span><button class="copy">コピー</button></div>
+    <pre>Blur anything on a web page before you take a screenshot, share your screen, or go live.
+
+• Text mode: select text by dragging, double-clicking, or selecting all, and it gets blurred right away.
+• Element mode: hover to highlight an element, click to blur it, click again to remove the blur.
+• Always blur: save words such as your email address, name, or API key. Every match on the page is blurred, including content that loads later. Click a saved word to turn it on or off, or remove it from the list. Add words from the popup or from the right-click menu.
+
+Blur applies to the tab where you open the popup or use the right-click menu. Reloading the page removes it. Press Esc or Stop to end a mode.
+
+Privacy: no data collection and no network requests. Your saved words stay in your browser. The extension does not ask for access to all sites. The source code is on GitHub under the MIT license.</pre>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">カテゴリ</span><span class="note">プルダウンで選びます</span></div>
+    <div class="choice">仕事効率化（Productivity） › ツール（Tools）</div>
+    <div class="note">ダッシュボード上の表記は未確認です。近い名前を選んでください。</div>
+  </div>
+
+  <h2 id="listing-ja">ストアの掲載情報：日本語</h2>
+  <p class="note">「編集中の言語」で 日本語 – ja を追加してから入力します。</p>
+  <div class="field">
+    <div class="head"><span class="label">パッケージのタイトル・概要</span><span class="note">_locales/ja から自動で入ります</span></div>
+    <pre>選択モザイク
+選んだ文字、クリックした要素、登録した文字にモザイクをかけます。スクリーンショットの前に個人情報を隠せます。</pre>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">説明</span><button class="copy">コピー</button></div>
+    <pre>スクリーンショット、画面共有、配信の前に、ページの文字をその場でぼかします。
+
+・文字モード：ドラッグ、ダブルクリック、全選択で選んだ文字がすぐにぼけます。
+・要素モード：マウスを乗せた要素が枠で囲まれ、クリックするとぼけます。もう一度クリックすると外れます。
+・常にぼかす文字：メールアドレス、名前、APIキーなどを登録すると、ページ内で見つかった場所がすべてぼけます。後から表示された部分にも当たります。一覧の文字を押すとオンとオフが切り替わり、×で消せます。ポップアップか右クリックのメニューから登録できます。
+
+ぼかしは、ポップアップか右クリックのメニューを使ったタブにかかります。ページを更新すると消えます。Esc か「停止」でモードを終えます。
+
+プライバシー：データを集めず、通信もしません。登録した文字はお使いのブラウザの中だけに残ります。すべてのサイトへのアクセス権限は求めません。ソースコードは MIT ライセンスで GitHub に公開しています。</pre>
+  </div>
+
+  <h2 id="assets">画像アセット</h2>
+  <div class="field">
+    <div class="head"><span class="label">ショップ アイコン（128×128）</span><span class="tag">全言語</span></div>
+    <div class="imgs"><figure><img src="../icons/icon128.png" style="width:128px"><figcaption>icons/icon128.png</figcaption></figure></div>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">全言語向けスクリーンショット（1280×800）</span><span class="tag">英語版を使う</span></div>
+    <div class="imgs">
+      <figure><img src="en-1-text.png"><figcaption>store/en-1-text.png</figcaption></figure>
+      <figure><img src="en-2-words.png"><figcaption>store/en-2-words.png</figcaption></figure>
+      <figure><img src="en-3-element.png"><figcaption>store/en-3-element.png</figcaption></figure>
+    </div>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">ローカライズ版スクリーンショット：日本語</span><span class="tag">日本語の掲載情報で入れる</span></div>
+    <div class="imgs">
+      <figure><img src="ja-1-text.png"><figcaption>store/ja-1-text.png</figcaption></figure>
+      <figure><img src="ja-2-words.png"><figcaption>store/ja-2-words.png</figcaption></figure>
+      <figure><img src="ja-3-element.png"><figcaption>store/ja-3-element.png</figcaption></figure>
+    </div>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">プロモーション タイル（小）440×280</span><span class="tag">全言語は英語版</span></div>
+    <div class="imgs">
+      <figure><img src="en-tile-440x280.png"><figcaption>store/en-tile-440x280.png</figcaption></figure>
+      <figure><img src="ja-tile-440x280.png"><figcaption>store/ja-tile-440x280.png（日本語で差し替えられる場合）</figcaption></figure>
+    </div>
+    <div class="note">画像はどれも透明度なしの PNG で、サイズも規定どおりです（sips で確認済み）。マーキー プロモーション タイル（1400×560）とプロモーション動画は任意なので空けておきます。</div>
+  </div>
+
+  <h2 id="extra">追加フィールド</h2>
+  <div class="field">
+    <div class="head"><span class="label">ホームページ URL</span><button class="copy">コピー</button></div>
+    <pre>https://github.com/konaito/select-mosaic</pre>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">サポート URL</span><button class="copy">コピー</button></div>
+    <pre>https://github.com/konaito/select-mosaic/issues</pre>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">公式 URL</span></div>
+    <div class="choice">空けておく（Search Console での所有権の確認が必要なため）</div>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">成人向けコンテンツ</span></div>
+    <div class="choice">オフ（含まない）</div>
+  </div>
+
+  <h2 id="privacy">プライバシー</h2>
+  <div class="field">
+    <div class="head"><span class="label">単一用途の説明</span><button class="copy">コピー</button></div>
+    <pre>Blur text and elements on web pages so users can hide personal information before taking screenshots, sharing their screen, or streaming.</pre>
+  </div>
+
+  <h3>権限が必要な理由</h3>
+  <div class="field">
+    <div class="head"><span class="label">activeTab</span><button class="copy">コピー</button></div>
+    <pre>Used to inject the blurring script into the current tab only when the user opens the popup or uses the context menu. The extension does not access other tabs.</pre>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">scripting</span><button class="copy">コピー</button></div>
+    <pre>Used to run the content script that wraps the text the user selects, the elements the user clicks, or the user's saved words, and applies a CSS blur to them.</pre>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">storage</span><button class="copy">コピー</button></div>
+    <pre>Used to save the user's "Always blur" word list and the on/off state of each word locally in chrome.storage.local. Nothing is synced or sent.</pre>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">contextMenus</span><button class="copy">コピー</button></div>
+    <pre>Used to add an "Always blur" item to the right-click menu, so the user can add selected text to the word list.</pre>
+  </div>
+
+  <div class="field">
+    <div class="head"><span class="label">リモートコードを使用していますか？</span></div>
+    <div class="choice">いいえ、リモートコードを使用していません</div>
+  </div>
+
+  <h3>データの使用</h3>
+  <div class="field">
+    <div class="head"><span class="label">収集するユーザーデータ</span></div>
+    <div class="choice">どの項目にもチェックを入れない</div>
+    <div class="note">ページの文字はブラウザの中でぼかすために読むだけで、保存も送信もしません。端末の外に出さない処理は「収集」に当たらない、という前提で外しています。</div>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">開示に関する宣言（3つ）</span></div>
+    <div class="choice">3つともチェックを入れる</div>
+    <div class="note">第三者に販売・譲渡しない／単一用途と関係のない目的に使わない／信用力の判断や融資の目的に使わない</div>
+  </div>
+  <div class="field">
+    <div class="head"><span class="label">プライバシー ポリシーの URL</span><button class="copy">コピー</button></div>
+    <pre>https://konaito.github.io/select-mosaic/privacy.html</pre>
+  </div>
+
+  <h2 id="regions">販売地域</h2>
+  <div class="field">
+    <div class="choice">すべての地域</div>
+  </div>
+
+  <h2 id="access">アクセス（公開設定）</h2>
+  <div class="field">
+    <div class="choice">公開</div>
+    <div class="note">審査に提出するときに「審査通過後に自動で公開」を選ぶと、通った時点で公開されます。</div>
+  </div>
+
+  <h2 id="test">テスト手順</h2>
+  <div class="field">
+    <div class="head"><span class="label">審査担当者への説明</span><button class="copy">コピー</button></div>
+    <pre>No account or login is required. Any normal web page works, for example https://en.wikipedia.org/wiki/Email_address
+
+1. Text mode: click the toolbar icon and choose "Blur selected text". Drag over some text on the page. The selected text is blurred. Press Esc to stop.
+2. Element mode: open the popup and choose "Blur clicked elements". Hover over the page to see the blue outline, then click a paragraph. It is blurred. Click it again to remove the blur. Press Esc to stop.
+3. Always blur: open the popup, type a word that appears on the page (for example "email") and click Add. Every match on the page is blurred. Click the word in the list to turn it off, and click × to remove it.
+4. Right-click menu: select a word on the page, right-click, and choose "Always blur ...". The word is added to the list and blurred on the page.
+5. Reload the page. All blur disappears.</pre>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('button.copy').forEach((btn) => {
+  btn.addEventListener('click', async () => {
+    const text = btn.closest('.field').querySelector('pre').textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.append(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    }
+    btn.textContent = 'コピーした'; btn.classList.add('done');
+    setTimeout(() => { btn.textContent = 'コピー'; btn.classList.remove('done'); }, 1500);
+  });
+});
+</script>
+</body>
+</html>
