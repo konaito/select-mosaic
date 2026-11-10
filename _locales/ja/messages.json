@@ -1,0 +1,80 @@
+{
+  "extName": {
+    "message": "選択モザイク"
+  },
+  "extDesc": {
+    "message": "選んだ文字、クリックした要素、登録した文字にモザイクをかけます。スクリーンショットの前に個人情報を隠せます。"
+  },
+  "statusIdle": {
+    "message": "停止中"
+  },
+  "statusText": {
+    "message": "文字モード：選んだ文字がぼける"
+  },
+  "statusElement": {
+    "message": "要素モード：クリックした要素がぼける"
+  },
+  "modeText": {
+    "message": "文字を選んでモザイク"
+  },
+  "modeTextHint": {
+    "message": "ドラッグ・ダブルクリック・全選択"
+  },
+  "modeElement": {
+    "message": "要素をクリックしてモザイク"
+  },
+  "modeElementHint": {
+    "message": "もう一度クリックで外す"
+  },
+  "stop": {
+    "message": "停止"
+  },
+  "clearAll": {
+    "message": "全部外す"
+  },
+  "hintStop": {
+    "message": "Esc でも停止。ページを更新すると、ここで付けたモザイクは消える。"
+  },
+  "errorPage": {
+    "message": "このページでは使えない（chrome:// やストアのページなど）"
+  },
+  "wordsTitle": {
+    "message": "常にぼかす文字"
+  },
+  "wordPlaceholder": {
+    "message": "ぼかしたい文字"
+  },
+  "add": {
+    "message": "追加"
+  },
+  "wordsEmpty": {
+    "message": "まだない。ページで文字を選んで右クリックからも足せる。"
+  },
+  "wordsHint": {
+    "message": "文字を押すとオンとオフが切り替わる。"
+  },
+  "persist": {
+    "message": "更新やページ移動のあとも、登録した文字をぼかし続ける"
+  },
+  "wordTurnOff": {
+    "message": "押すとオフ"
+  },
+  "wordTurnOn": {
+    "message": "押すとオンに戻す"
+  },
+  "remove": {
+    "message": "一覧から消す"
+  },
+  "persistError": {
+    "message": "設定を変えられなかった: "
+  },
+  "contextMenu": {
+    "message": "「%s」を常にぼかす"
+  },
+  "badgeText": {
+    "message": "文字"
+  },
+  "badgeElement": {
+    "message": "要素"
+  }
+}

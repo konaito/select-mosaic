@@ -1,0 +1,80 @@
+{
+  "extName": {
+    "message": "Select Mosaic"
+  },
+  "extDesc": {
+    "message": "Blur text you select, elements you click, or words you save. Hide personal info before you take a screenshot."
+  },
+  "statusIdle": {
+    "message": "Off"
+  },
+  "statusText": {
+    "message": "Text mode: selected text gets blurred"
+  },
+  "statusElement": {
+    "message": "Element mode: clicked elements get blurred"
+  },
+  "modeText": {
+    "message": "Blur selected text"
+  },
+  "modeTextHint": {
+    "message": "Drag, double-click, or select all"
+  },
+  "modeElement": {
+    "message": "Blur clicked elements"
+  },
+  "modeElementHint": {
+    "message": "Click again to remove"
+  },
+  "stop": {
+    "message": "Stop"
+  },
+  "clearAll": {
+    "message": "Remove all"
+  },
+  "hintStop": {
+    "message": "Esc also stops. Reloading the page removes the blur you added here."
+  },
+  "errorPage": {
+    "message": "Not available on this page (chrome:// pages, the Web Store, etc.)"
+  },
+  "wordsTitle": {
+    "message": "Always blur"
+  },
+  "wordPlaceholder": {
+    "message": "Text to blur"
+  },
+  "add": {
+    "message": "Add"
+  },
+  "wordsEmpty": {
+    "message": "Nothing yet. You can also select text on a page and add it from the right-click menu."
+  },
+  "wordsHint": {
+    "message": "Click a word to turn it on or off."
+  },
+  "persist": {
+    "message": "Keep blurring saved words after reloads and on other pages"
+  },
+  "wordTurnOff": {
+    "message": "Click to turn off"
+  },
+  "wordTurnOn": {
+    "message": "Click to turn back on"
+  },
+  "remove": {
+    "message": "Remove from list"
+  },
+  "persistError": {
+    "message": "Could not change the setting: "
+  },
+  "contextMenu": {
+    "message": "Always blur \"%s\""
+  },
+  "badgeText": {
+    "message": "TXT"
+  },
+  "badgeElement": {
+    "message": "EL"
+  }
+}
