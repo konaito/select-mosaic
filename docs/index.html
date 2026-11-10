@@ -18,7 +18,8 @@
   .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
   header { display: flex; align-items: center; gap: 10px; height: 64px; }
   header img { width: 28px; height: 28px; }
-  header .name { font-weight: 700; }
+  header .name { font-weight: 700; white-space: nowrap; }
+  .lang { white-space: nowrap; }
   header nav { margin-left: auto; display: flex; gap: 6px; align-items: center; }
   .lang button { border: 1px solid var(--line); background: #fff; padding: 3px 10px; border-radius: 999px; font: inherit; font-size: 13px; cursor: pointer; color: var(--sub); }
   .lang button.on { border-color: var(--ink); color: var(--ink); font-weight: 600; }
@@ -26,7 +27,8 @@
 
   .hero { padding: 48px 24px 28px; text-align: center; }
   .hero h1, .hero p, section h2 { word-break: auto-phrase; text-wrap: balance; }
-  .hero h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.01em; }
+  .hero h1 { font-size: clamp(28px, 6vw, 56px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.01em; }
+  .hero h1 .nb { white-space: nowrap; }
   .hero h1 .b { display: inline-block; animation: pulse 4s ease-in-out infinite; }
   @keyframes pulse { 0%, 35% { filter: blur(0); } 50%, 85% { filter: blur(6px); } 100% { filter: blur(0); } }
   @media (prefers-reduced-motion: reduce) { .hero h1 .b { animation: none; } }
@@ -84,6 +86,12 @@
   .feature h3 { font-size: 21px; margin: 0 0 8px; }
   .feature p { color: var(--sub); margin: 0; }
   .feature img { width: 100%; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 10px 30px rgba(17, 24, 39, .08); }
+  .chat { max-width: 640px; display: grid; gap: 10px; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--soft); }
+  .msg { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 15px; line-height: 1.6; }
+  .msg.me { justify-self: end; background: var(--ink); color: #fff; border-bottom-right-radius: 4px; }
+  .msg.ai { justify-self: start; background: #fff; border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+  .msg .took { display: block; font-size: 12px; color: var(--mute); margin-bottom: 2px; }
+  .after { max-width: 640px; margin: 18px 0 0; font-size: 17px; font-weight: 600; }
   .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .card { border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
   .card h3 { margin: 0 0 6px; font-size: 17px; }
@@ -137,6 +145,15 @@
       <div class="stage" id="stage"></div>
     </div>
   </div>
+
+  <section id="story">
+    <div class="wrap">
+      <h2 data-k="sTitle"></h2>
+      <p class="lead" data-k="sLead"></p>
+      <div class="chat" data-k="sChat" data-html></div>
+      <p class="after" data-k="sAfter"></p>
+    </div>
+  </section>
 
   <section id="features">
     <div class="wrap">
@@ -197,8 +214,17 @@
 const T = {
   ja: {
     name: '選択モザイク',
-    h1: '映したくない文字だけ、<span class="b">ぼかす。</span>',
-    sub: '選んだ文字、クリックした要素、登録した文字を、その場でぼかすChrome拡張です。スクリーンショット、画面共有、配信の前に。',
+    h1: '共有したい<span class="b">あなた</span>のための、<span class="nb">プライバシー保護ツール</span>',
+    sub: 'AIに「モザイクして」と頼むの、だるくないですか？ 選択モザイクなら、隠したい文字を選んだ瞬間にぼけます。スクリーンショット、画面共有、配信の前に。',
+    sTitle: 'AIに頼むと、こうなる',
+    sLead: 'スクリーンショットの一部を隠してほしくて、AIに頼んだときのやり取りです。',
+    sChat: `<div class="msg me">taro@ と hanako@ 以外の機密部分をモザイクしてください。ceo@example.jp の @ だけはモザイクしないでください</div>
+      <div class="msg me">example.jp と EXAMPLE.jp も隠すべきです</div>
+      <div class="msg ai">example.jp と EXAMPLE.jp もすべてモザイク処理しました。修正版の画像を見る</div>
+      <div class="msg me">ceo@example.jp の @ 以外のモザイクが外れた</div>
+      <div class="msg ai"><span class="took">6分14秒</span>修正しました。ceo@example.jp は @ だけ残して、それ以外をモザイクにしています。</div>
+      <div class="msg me">ceo も隠してよ。言ったこと忘れないで</div>`,
+    sAfter: '画像1枚に、何往復もかかります。選択モザイクなら、隠したい文字をドラッグするだけです。登録した文字は、次のページでも同じようにぼかせます。',
     store: 'Chrome ウェブストア <small>審査中</small>',
     source: 'ソースコード',
     hint: { text: 'カードの中の文字をドラッグして選んでください', element: 'カードの中の行をクリックしてください。もう一度で外れます', words: '登録した文字は、カードの中で見つかった場所がすべてぼけます' },
@@ -211,11 +237,11 @@ const T = {
       <tr><td>APIキー</td><td>sk-live-4f9a2c7e1b8d6a3f0e5c</td></tr></table>
       <p class="note">返信は常に taro.yamada@example.com から送ります。</p>`,
     seedWords: ['taro.yamada@example.com', 'sk-live-4f9a2c7e1b8d6a3f0e5c'],
-    fTitle: '3つのぼかし方', fLead: '拡張のアイコンを押すか Alt+Shift+M でポップアップを開き、使い方を選びます。',
+    fTitle: '3つのぼかし方', fLead: '共有する前に、拡張のアイコンを押すか Alt+Shift+M でポップアップを開き、使い方を選びます。',
     f1h: '文字を選んでぼかす', f1p: 'ドラッグ、ダブルクリック、全選択で選んだ文字が、選んだ瞬間にぼけます。Esc で止めます。',
     f2h: '登録した文字を全部ぼかす', f2p: 'メールアドレスや名前を一覧に登録すると、ページの中で見つかった場所がすべてぼけます。後から表示された部分にも当たります。一覧の文字を押すとオンとオフが切り替わります。右クリックからも登録できます。',
     f3h: '要素ごとぼかす', f3p: 'マウスを乗せた要素が枠で囲まれ、クリックするとその要素全体がぼけます。もう一度クリックすると外れます。',
-    pTitle: '通信しない拡張です', pLead: '隠したい情報を扱う道具なので、拡張そのものが情報を外に出さない作りにしています。',
+    pTitle: '隠したい情報を、外に出さない', pLead: 'プライバシーを守る道具なので、拡張そのものも通信しない作りにしています。AIに画像を渡す必要もありません。',
     p1h: 'データを集めない', p1p: '登録した文字はブラウザの中にだけ保存します。アクセス解析も広告もありません。',
     p2h: '全サイトの権限を求めない', p2p: 'ポップアップか右クリックを使ったタブにだけ入ります。権限は <code>activeTab</code>、<code>scripting</code>、<code>storage</code>、<code>contextMenus</code> の4つです。',
     p3h: 'コードを公開', p3p: 'ソースは <a href="https://github.com/konaito/select-mosaic">GitHub</a> に MIT ライセンスで公開しています。<a href="privacy.html">プライバシーポリシー</a>',
@@ -268,12 +294,13 @@ let words = [];
 function render() {
   const t = T[lang];
   document.documentElement.lang = lang;
-  document.title = lang === 'ja' ? '選択モザイク（Select Mosaic）' : 'Select Mosaic';
+  document.title = lang === 'ja' ? '選択モザイク：共有したいあなたのためのプライバシー保護ツール' : 'Select Mosaic';
   document.querySelectorAll('[data-k]').forEach((el) => {
     const v = t[el.dataset.k];
     if (typeof v !== 'string') return;
     if ('html' in el.dataset) el.innerHTML = v; else el.textContent = v;
   });
+  document.getElementById('story').hidden = !t.sTitle;
   document.querySelectorAll('[data-img]').forEach((img) => (img.src = `assets/${lang}-${img.dataset.img}.png`));
   document.querySelectorAll('.lang button').forEach((b) => b.classList.toggle('on', b.dataset.lang === lang));
   document.getElementById('wordInput').placeholder = t.wordPh;
