@@ -207,15 +207,14 @@ AIに「モザイクして」と頼まなくても、隠したい文字を選ん
 
   <h2 id="test">テスト手順</h2>
   <div class="field">
-    <div class="head"><span class="label">審査担当者への説明</span><button class="copy">コピー</button></div>
-    <pre>No account or login is required. Any normal web page works, for example https://en.wikipedia.org/wiki/Email_address
-
-1. Text mode: click the toolbar icon and choose "Blur selected text". Drag over some text on the page. The selected text is blurred. Press Esc to stop.
-2. Element mode: open the popup and choose "Blur clicked elements". Hover over the page to see the blue outline, then click a paragraph. It is blurred. Click it again to remove the blur. Press Esc to stop.
-3. Always blur: open the popup, type a word that appears on the page (for example "email") and click Add. Every match on the page is blurred. Click the word in the list to turn it off, and click × to remove it.
-4. Right-click menu: select a word on the page, right-click, and choose "Always blur ...". The word is added to the list and blurred on the page.
-5. Blur strength: open the popup and drag the "Blur strength" slider to 10px. Blur already on the page gets stronger right away. Close and reopen the popup; the slider keeps the value.
-6. Reload the page. All blur disappears.</pre>
+    <div class="head"><span class="label">審査担当者への説明</span><span class="note">ダッシュボードの「追加の手順」欄は500文字までです</span><button class="copy">コピー</button></div>
+    <pre>No login needed. Any page works, e.g. https://en.wikipedia.org/wiki/Email_address
+1. Popup &gt; "Blur selected text", drag over text: it blurs. Esc stops.
+2. Popup &gt; "Blur clicked elements", click a paragraph: it blurs. Click again to undo.
+3. Popup: type "email", click Add: all matches blur. Click it to toggle, × to remove.
+4. Select a word, right-click &gt; "Always blur ...": it is added and blurred.
+5. Drag "Blur strength" to 10px: blur gets stronger. It is kept.
+6. Reload: all blur is gone.</pre>
   </div>
 </div>
 
