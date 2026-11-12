@@ -22,6 +22,7 @@ Click the toolbar icon or press Alt+Shift+M to open the popup. While a mode is o
 - **Text mode**: text you select by dragging, double-clicking, or selecting all is blurred right away.
 - **Element mode**: the element under the cursor is outlined; click to blur it, click again to remove the blur. Clicks do not reach the page while this mode is on.
 - **Stop** or Esc ends the mode. Blur you added stays until you click **Remove all** or reload the page.
+- **Blur strength**: the slider above **Blur selected text** in the popup sets the blur from 3px to 10px (default 3px) for selected text and saved words. Element blur is always 5/3 of that value (5px by default). Tabs where the extension is running update right away, and the value is kept after you close the browser.
 
 ### Always blur
 
@@ -44,7 +45,7 @@ Saved words apply to tabs where you opened the popup or used the right-click men
 
 ## Privacy
 
-No data collection and no network requests. Saved words are kept in `chrome.storage.local` in your browser. See the [privacy policy](https://konaito.github.io/select-mosaic/privacy.html).
+No data collection and no network requests. Saved words and the blur strength are kept in `chrome.storage.local` in your browser. See the [privacy policy](https://konaito.github.io/select-mosaic/privacy.html).
 
 ## License
 

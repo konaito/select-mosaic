@@ -46,6 +46,21 @@ async function initPage() {
   if (text && text.length <= 100 && !text.includes('\n')) $('word').value = text;
 }
 
+// ---------- ぼかしの強さ ----------
+// storage.local の strength に文字側の px で持つ。開いているタブの content.js が変更を受けてすぐ反映する。
+
+async function initStrength() {
+  const input = $('strength');
+  const show = () => ($('strengthValue').textContent = `${input.value}px`);
+  const { strength } = await chrome.storage.local.get({ strength: Number(input.value) });
+  input.value = strength;
+  show();
+  input.oninput = () => {
+    show();
+    chrome.storage.local.set({ strength: Number(input.value) });
+  };
+}
+
 // ---------- 常にぼかす文字 ----------
 
 function renderWords(words) {
@@ -80,6 +95,7 @@ $('add').onsubmit = async (e) => {
 };
 
 (async () => {
+  await initStrength();
   renderWords(await getWords());
   await initPage();
 })();

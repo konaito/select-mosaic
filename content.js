@@ -11,10 +11,24 @@
   let mouseDown = false;
   let timer = 0;
 
+  // 強さはポップアップのスライダで決め、storage.local の strength に文字側の px で持つ。
+  // 要素側は文字側の 5/3 倍にする（既定の 3px と 5px の比）。
+  const STRENGTH = { min: 3, max: 10, def: 3 };
+  const blurStyle = document.createElement('style');
+  function setStrength(value) {
+    const n = Number(value);
+    const px = Number.isFinite(n) ? Math.min(STRENGTH.max, Math.max(STRENGTH.min, n)) : STRENGTH.def;
+    const el = Math.round((px * 5) / 3 * 10) / 10;
+    blurStyle.textContent = `
+      .${WRAP}, .${WORD} { filter: blur(${px}px) !important; }
+      .${EL} { filter: blur(${el}px) !important; }
+    `;
+  }
+  setStrength(STRENGTH.def);
+  (document.head || document.documentElement).appendChild(blurStyle);
+
   const style = document.createElement('style');
   style.textContent = `
-    .${WRAP}, .${WORD} { filter: blur(3px) !important; }
-    .${EL} { filter: blur(5px) !important; }
     #smz-hover {
       position: fixed; z-index: 2147483647; pointer-events: none; display: none;
       outline: 2px solid #2563eb; background: rgba(37, 99, 235, .12); border-radius: 2px;
@@ -253,12 +267,15 @@
     }, 100);
   });
 
-  chrome.storage.local.get({ words: [] }).then(({ words }) => {
+  chrome.storage.local.get({ words: [], strength: STRENGTH.def }).then(({ words, strength }) => {
+    setStrength(strength);
     applyWords(words);
     observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
   });
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'local' && changes.words) applyWords(changes.words.newValue || []);
+    if (area !== 'local') return;
+    if (changes.strength) setStrength(changes.strength.newValue ?? STRENGTH.def);
+    if (changes.words) applyWords(changes.words.newValue || []);
   });
 
   window.addEventListener('keydown', (e) => {
