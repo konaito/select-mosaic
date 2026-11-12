@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;zoom:1.15;font:15px/1.6 -apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif;color:#1f2937;background:#f6f7fb}
+header{height:56px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 28px;gap:12px;font-weight:600}
+header .logo{width:26px;height:26px;border-radius:7px;background:#6366f1}
+.wrap{display:grid;grid-template-columns:220px 1fr;gap:24px;padding:24px 28px}
+nav div{padding:8px 12px;border-radius:8px;color:#4b5563}nav div.on{background:#e0e7ff;color:#3730a3;font-weight:600}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:22px 26px}
+h2{margin:0 0 14px;font-size:20px}
+table{border-collapse:collapse;width:100%}td{padding:12px 8px;border-top:1px solid #f0f0f0;vertical-align:top}td:first-child{width:180px;color:#6b7280}
+.muted{color:#6b7280;font-size:13px}
+</style></head><body>
+<header><div class="logo"></div><span id="app"></span></header>
+<div class="wrap"><nav id="nav"></nav><main class="card" id="main"></main></div>
+<script>
+const ja = location.hash.includes('ja');
+const T = ja ? {
+ app:'Acme メール', nav:['受信トレイ','送信済み','アカウント設定','請求'], title:'アカウント設定',
+ rows:[['名前','山田 太郎 &lt;taro.yamada@example.com&gt;'],['予備のアドレス','花子 &lt;hanako.sato@example.com&gt;'],['電話番号','090-1234-5678'],['住所','東京都千代田区丸の内1-1-1 サンプルビル 12F'],['APIキー','sk-live-4f9a2c7e1b8d6a3f0e5c'],['カード','VISA •••• 4242　有効期限 12/29']],
+ note:'返信は常に taro.yamada@example.com から送ります。',
+ login:'最近のログイン', logins:[['今日 09:12','東京 · 203.0.113.24 · MacBook'],['昨日 22:40','大阪 · 198.51.100.7 · iPhone'],['11月8日 14:03','東京 · 203.0.113.24 · MacBook']]
+} : {
+ app:'Acme Mail', nav:['Inbox','Sent','Account settings','Billing'], title:'Account settings',
+ rows:[['Name','Taro Yamada &lt;taro.yamada@example.com&gt;'],['Backup address','Hanako Sato &lt;hanako.sato@example.com&gt;'],['Phone','+1 415-555-0134'],['Address','1 Market St, Suite 1200, San Francisco, CA'],['API key','sk-live-4f9a2c7e1b8d6a3f0e5c'],['Card','VISA •••• 4242  exp 12/29']],
+ note:'Replies are always sent from taro.yamada@example.com.',
+ login:'Recent sign-ins', logins:[['Today 09:12','San Francisco · 203.0.113.24 · MacBook'],['Yesterday 22:40','Oakland · 198.51.100.7 · iPhone'],['Nov 8 14:03','San Francisco · 203.0.113.24 · MacBook']]
+};
+app.textContent=T.app;
+nav.innerHTML=T.nav.map((n,i)=>`<div class="${i==2?'on':''}">${n}</div>`).join('');
+main.innerHTML=`<h2>${T.title}</h2><table>${T.rows.map((r,i)=>`<tr><td>${r[0]}</td><td id="v${i}">${r[1]}</td></tr>`).join('')}</table><p class="muted" id="note">${T.note}</p><h2 style="margin-top:22px">${T.login}</h2><table>${T.logins.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`;
+</script></body></html>
