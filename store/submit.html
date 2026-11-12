@@ -50,8 +50,8 @@
   <h2 id="pkg">パッケージ</h2>
   <div class="field">
     <div class="head"><span class="label">アップロードする zip</span><button class="copy">コピー</button></div>
-    <pre>~/Documents/select-mosaic/dist/select-mosaic-1.0.0.zip</pre>
-    <div class="note">全サイトへのアクセス権限を外したあとに作り直したものです。</div>
+    <pre>~/Documents/select-mosaic/dist/select-mosaic-1.1.0.zip</pre>
+    <div class="note">モザイクの強さのスライダを足した版です。すでに公開している場合は「パッケージ」から新しい zip をアップロードします。</div>
   </div>
 
   <h2 id="listing-en">ストアの掲載情報：英語（デフォルト）</h2>
@@ -67,10 +67,11 @@ Blur text you select, elements you click, or words you save. Hide personal info 
 • Text mode: select text by dragging, double-clicking, or selecting all, and it gets blurred right away.
 • Element mode: hover to highlight an element, click to blur it, click again to remove the blur.
 • Always blur: save words such as your email address, name, or API key. Every match on the page is blurred, including content that loads later. Click a saved word to turn it on or off, or remove it from the list. Add words from the popup or from the right-click menu.
+• Blur strength: use the slider in the popup to set the blur from 3px to 10px for selected text and saved words. Element blur scales with it. Blur already on the page updates right away, and the setting is kept.
 
 Blur applies to the tab where you open the popup or use the right-click menu. Reloading the page removes it. Press Esc or Stop to end a mode.
 
-Privacy: no data collection and no network requests. Your saved words stay in your browser. The extension does not ask for access to all sites. The source code is on GitHub under the MIT license.</pre>
+Privacy: no data collection and no network requests. Your saved words and blur strength stay in your browser. The extension does not ask for access to all sites. The source code is on GitHub under the MIT license.</pre>
   </div>
   <div class="field">
     <div class="head"><span class="label">カテゴリ</span><span class="note">プルダウンで選びます</span></div>
@@ -93,10 +94,11 @@ AIに「モザイクして」と頼まなくても、隠したい文字を選ん
 ・文字モード：ドラッグ、ダブルクリック、全選択で選んだ文字がすぐにぼけます。
 ・要素モード：マウスを乗せた要素が枠で囲まれ、クリックするとぼけます。もう一度クリックすると外れます。
 ・常にぼかす文字：メールアドレス、名前、APIキーなどを登録すると、ページ内で見つかった場所がすべてぼけます。後から表示された部分にも当たります。一覧の文字を押すとオンとオフが切り替わり、×で消せます。ポップアップか右クリックのメニューから登録できます。
+・モザイクの強さ：ポップアップのスライダで、文字と登録した文字のぼかしを3pxから10pxまで変えられます。要素のぼかしもそれに合わせて強くなります。かけたぼかしにもすぐ反映され、設定は次も残ります。
 
 ぼかしは、ポップアップか右クリックのメニューを使ったタブにかかります。ページを更新すると消えます。Esc か「停止」でモードを終えます。
 
-プライバシー：データを集めず、通信もしません。登録した文字はお使いのブラウザの中だけに残ります。すべてのサイトへのアクセス権限は求めません。ソースコードは MIT ライセンスで GitHub に公開しています。</pre>
+プライバシー：データを集めず、通信もしません。登録した文字とモザイクの強さはお使いのブラウザの中だけに残ります。すべてのサイトへのアクセス権限は求めません。ソースコードは MIT ライセンスで GitHub に公開しています。</pre>
   </div>
 
   <h2 id="assets">画像アセット</h2>
@@ -164,7 +166,7 @@ AIに「モザイクして」と頼まなくても、隠したい文字を選ん
   </div>
   <div class="field">
     <div class="head"><span class="label">storage</span><button class="copy">コピー</button></div>
-    <pre>Used to save the user's "Always blur" word list and the on/off state of each word locally in chrome.storage.local. Nothing is synced or sent.</pre>
+    <pre>Used to save the user's "Always blur" word list, the on/off state of each word, and the blur strength setting locally in chrome.storage.local. Nothing is synced or sent.</pre>
   </div>
   <div class="field">
     <div class="head"><span class="label">contextMenus</span><button class="copy">コピー</button></div>
@@ -212,7 +214,8 @@ AIに「モザイクして」と頼まなくても、隠したい文字を選ん
 2. Element mode: open the popup and choose "Blur clicked elements". Hover over the page to see the blue outline, then click a paragraph. It is blurred. Click it again to remove the blur. Press Esc to stop.
 3. Always blur: open the popup, type a word that appears on the page (for example "email") and click Add. Every match on the page is blurred. Click the word in the list to turn it off, and click × to remove it.
 4. Right-click menu: select a word on the page, right-click, and choose "Always blur ...". The word is added to the list and blurred on the page.
-5. Reload the page. All blur disappears.</pre>
+5. Blur strength: open the popup and drag the "Blur strength" slider to 10px. Blur already on the page gets stronger right away. Close and reopen the popup; the slider keeps the value.
+6. Reload the page. All blur disappears.</pre>
   </div>
 </div>
 
